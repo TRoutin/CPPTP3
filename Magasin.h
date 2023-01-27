@@ -91,6 +91,44 @@ void updProductQuant(std::string title, int quantity, std::string firstname, std
 
 //____________________________________________________________
 
+    
+    bool validOrder(Client &client);  // Order validation method 
+
+    bool validOrder(std::string firstname, std::string lastname);  // (specificated)
+
+    bool validOrder(int id);  // (With id)
+
+    
+    bool updOrderStatus(int id, bool status); // Update order status method
+
+    void showPastOrders(); // Showpastorders method
+
+    
+    void showClientOrders(int id); // Show orders from a client (id) method
+
+    void showClientOrders(std::string firstname, std::string lastname);  // Show orders from a client (specified) method
+
+//_________________________________________________________________
+
+    bool productExist(std::string titre);  // IsProduct method (check if it exists)
+
+
+    
+    Product *productFind(std::string titre); // Return a product by its price
+
+    
+    bool IsClient(std::string firstname, std::string lastname); // IsClient method (vérifie l'existence)
+
+   
+    bool IsClient(int id); // IsClient  with id method
+
+    
+    Client *clientFind(std::string firstname, std::string lastname); // Return a found client 
+
+    void newOrder(Commande &order); // newOrder method
+
+    void addProductStore(std::string lastname, std::string description, float price, int quantity); // Add a product to the store command 
+
 
 private:
 

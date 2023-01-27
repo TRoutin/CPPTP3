@@ -249,3 +249,230 @@ void Magasin::updProductQuant(std::string title, int quantity, std::string first
             break;
         }  
 }
+
+//______________________________________________________________
+
+
+// Order validation method definition
+
+bool Magasin::validOrder(Client& client){
+    bool valide = true ;
+    for(auto& i:client.getPanier())
+        for(auto& j:m_products)
+            if(i.getTitre() == j.getTitre())
+                if( i.getQuantite() >= j.getQuantite()){
+                    valide = false;
+                    std::cout << " Il y a -- produits "
+                              << i.getTitre() << " -- est : " << j.getQuantite();
+                    }                                     
+
+    if(valide){
+        Commande commande(client);
+        m_orders.push_back(commande);
+        //modifier la quantité des produits est present  après  validation
+        for(auto& i :client.getPanier())
+            for(auto& j: m_products)
+                if(i.getTitre() == j.getTitre()){
+                    int quantite_restee;
+                    quantite_restee = j.getQuantite() - i.getQuantite();
+                    j.setQuantite(quantite_restee);
+                }
+
+        std::cout << "Valid command" << std::endl;
+        client.viderPanier();
+    }
+
+    else
+        std::cout << " Command not found " << std::endl;
+    
+    return valide;
+}
+
+
+// (specificated) definition
+
+bool Magasin::validOrder(std::string firstname, std::string lastname){
+    bool valide = true ;
+    Client* client;
+    bool client_trouve = false;
+    //vérifier que le client existe
+    for(auto&i : m_clients)
+        if(i.getPrenom() == firstname && i.getNom() == lastname ){
+            client = &i;
+            client_trouve = true ;
+            break;
+        }
+
+    if(client_trouve)
+    for(auto& i:client -> getPanier())
+        for(auto& j:m_products)
+            if(i.getTitre() == j.getTitre())
+                if( i.getQuantite() >= j.getQuantite()){
+                    valide = false;
+                    std::cout << "  Il y a -- produits "
+                              << i.getTitre() << " -- est : " << j.getQuantite();
+                    }                                     
+
+    if(valide){
+        Commande commande(*client);
+        m_orders.push_back(commande); 
+        for(auto& i :client->getPanier())
+            for(auto& j: m_products)
+                if(i.getTitre() == j.getTitre()){
+                    int quantite_restee;
+                    quantite_restee = j.getQuantite() - i.getQuantite();
+                    j.setQuantite(quantite_restee);
+                }
+
+        std::cout << " Valid command" << std::endl;
+        client->viderPanier();
+    }
+    else if(!client_trouve)
+        std::cout << "Order nor found , no client found" << std::endl;
+    
+    return valide;
+}
+bool Magasin::validOrder(int id){
+    bool valide = true ;
+    Client *client;
+    bool client_trouve = false;
+    //vérification que le  client existe
+    for(auto&i : m_clients)
+        if(i.getId() == id ){
+            client = &i;
+            client_trouve = true ;
+            break;
+        }
+
+
+    for(auto& i:client->getPanier())
+        for(auto& j:m_products)
+            if(i.getTitre() == j.getTitre())
+                if( i.getQuantite() > j.getQuantite()){
+                    valide = false;
+                    std::cout << "[ERROR - UNVALID] PRODUCT'S QUANTITY   "
+                              << i.getTitre() << "  is : " << j.getQuantite() << ". Client asked for " << i.getQuantite() << std::endl;
+                    }                                     
+
+    if(valide){
+        Commande commande(*client);
+        m_orders.push_back(commande); 
+        std::cout << "Valid command" << std::endl;
+        client->viderPanier();
+    }
+    else if(!client_trouve)
+        std::cout << " Order nor found , no client found" << std::endl;
+    
+    return valide;
+}
+
+
+
+// Update order status method definition
+
+bool Magasin::updOrderStatus(int id , bool status){
+    //trouver la commande en se servant de son id
+    bool commande_trouvee = false;
+
+    for(auto&i : m_orders)
+        if(i.getId() == id ){
+            i.setLivraison(status);
+            commande_trouvee = true ;
+            break;
+        }    
+    
+    if(commande_trouvee)
+        std::cout << "Update order status successful\n";
+    else
+        std::cout << "ERROR in update order status  \n";
+
+    return commande_trouvee ;   
+}
+
+
+
+// Showpastorders method definition
+
+void Magasin::showPastOrders(){
+    std::cout << "\t---Affichage des commandes passées---\n";
+    for(auto& i : m_orders)
+        if(i.getLivraison())
+            std::cout << i << std::endl;
+}
+
+
+// Show orders from a client (id) method
+
+void Magasin::showClientOrders(int id){
+    std::cout << "\t---Affichage des commandes du client qui a l'ID suivant  " << id << " ---\n";
+    for(auto& i : m_orders){
+        std::cout << " afficher le client avec son ID " << std::endl;
+        if( i.getClient()->getId() == id)
+            std::cout << i << std::endl;
+    }
+
+}
+
+
+// (specified) definition
+
+void Magasin::showClientOrders(std::string firstname, std::string lastname){
+    std::cout << "\t---Affichage des commandes du client " << firstname << " "<< lastname << " ---\n";
+    for(auto& i : m_orders)
+        if( i.getClient()->getPrenom() == firstname && i.getClient()->getNom() == lastname)
+            std::cout << i << std::endl;
+}
+
+// IsProduct method definition
+
+bool Magasin::productExist(std::string title){
+    for(auto&i : m_products)
+        if(i.getTitre() == title)
+            return true;
+    return false;
+}
+
+// ProductFind method definition
+
+Product* Magasin::productFind(std::string title){
+    for(auto&i : m_products)
+        if(i.getTitre() == title)
+            return &i;
+    //si on trouve pas le produit correspondant on fait un return
+    return nullptr;
+}
+
+// IsClient method definition
+
+bool Magasin::IsClient(std::string firstname, std::string lastname){
+    for(auto& i:m_clients)
+        if( i.getPrenom() == firstname && i.getNom() == lastname)
+            return true ;
+
+    return false ;
+}
+
+// IsClient method definition with id
+
+bool Magasin::IsClient(int id){
+    for(auto& i:m_clients)
+        if( i.getId() == id)
+            return true;
+    
+    return false;
+}
+
+// ClientFind method definition
+
+Client* Magasin::clientFind(std::string firstname , std::string lastname){
+    if(IsClient(firstname,lastname)){
+        for(auto& i:m_clients)
+            if( i.getPrenom() == firstname && i.getNom() == lastname)
+                return &i ;//client trouvé
+    } 
+    
+    else
+        std::cout << " client n'existe pas \n";
+    
+    return nullptr;
+}
