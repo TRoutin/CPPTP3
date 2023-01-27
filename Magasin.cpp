@@ -20,5 +20,51 @@ std::vector <Client > Magasin::getClients() const { return m_clients ;}
 std::vector <Commande > Magasin::getOrders() const { return m_orders ;}
 
 
-// IMPORTANT, J'ai fais le choix de déclarer mes vector avec des types Product Client et Commande,
-// car thomas travaille déjà dessus, ça m'évitera de les changer après (bien que je ne pourrai pas tester tout de suite dans le main)
+//______________________________________________________
+
+//  Add product method definition
+
+void Magasin::newProduct(Product product){
+    m_products.push_back(product);
+}
+
+
+// Show products method definition
+
+void Magasin::showProducts(){
+    for (int i =0 ; i< m_products.size(); i++)
+    {
+        std::cout<< m_products[i]<<std::endl;
+    }
+}
+
+
+// Show products (with name) method definition
+
+void Magasin::showProduct(std::string nom_product){
+    for(auto& i : m_products)
+        if( i.getTitre() == nom_product){
+            std::cout << "\n product : \n" ;
+            std::cout << i << "\n";
+            break;
+        }
+   
+}
+
+
+// Qauntity method definition
+
+void Magasin::newQuantity(std::string name_product,int quantity){
+   
+    if(quantite >= 0){
+        for(auto& i : m_products){
+       
+             if( i.getTitre() == name_product){
+            i.setQuantity(quantity);
+            break;
+             }
+        }
+    }
+    else
+        std::cout << " Invalid name ." << std::endl;
+}

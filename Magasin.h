@@ -1,5 +1,9 @@
 #pragma once
 
+#include "Produit.h"
+#include "Client.h"
+#include "Commande.h"
+
 #include <string>
 #include <iostream>
 #include <vector>
@@ -23,6 +27,18 @@ public:
     std::vector<Client> getClients() const;
 
     std::vector<Commande> getOrders() const;
+
+//________________________________________________
+
+    
+    void newProduct(Product product); // Add new Product method
+
+    
+    void showProducts();               // Show Products method
+    void showProduct(std::string name_product); // Show product (with name) method
+
+    
+    void newQuantity(std::string name_product, int quantity); //update quantity method
 
 
 private:
