@@ -1,4 +1,5 @@
 #include "Magasin.h"
+#pragma warning(disable : 4703)
 
 // Default Constructor Definition
 Magasin::Magasin(){
@@ -43,7 +44,7 @@ void Magasin::showProducts(){
 
 void Magasin::showProduct(std::string nom_product){
     for(auto& i : m_products)
-        if( i.getTitre() == nom_product){
+        if( i.getTitle() == nom_product){
             std::cout << "\n product : \n" ;
             std::cout << i << "\n";
             break;
@@ -59,8 +60,8 @@ void Magasin::updQuantity(std::string name_product,int quantity){
     if(quantity >= 0){
         for(auto& i : m_products){
        
-             if( i.getTitre() == name_product){
-            i.setQuantity(quantity);
+             if( i.getTitle() == name_product){
+            i.setQuantite(quantity);
             break;
              }
         }
@@ -111,7 +112,7 @@ void Magasin::showClients(){
         std::cout << i.getId() ;
         for(int j = 0 ; j < 12 - (int)std::to_string(i.getId()).length() ; j++)
             {std::cout << " ";}
-        std::cout << i.getPrenom() << " " << i.getNom() << std::endl ;
+        std::cout << i.getFirstname() << " " << i.getName() << std::endl ;
     }
     std::cout << std::endl;
     
@@ -121,7 +122,7 @@ void Magasin::showClients(){
 
 void Magasin::showClient(std::string firstname, std::string lastname){
     for(auto& i : m_clients){
-        if( i.getPrenom() == firstname &&  i.getNom() == lastname){
+        if( i.getFirstname() == firstname &&  i.getName() == lastname){
             std::cout << "\t Affichage du client\n";
             std::cout << "Uid" ;
             for(int i = 0 ; i < 9 ; i++)
@@ -131,7 +132,7 @@ void Magasin::showClient(std::string firstname, std::string lastname){
 
             for(int j = 0 ; j < (int)std::to_string(i.getId()).length() - 3; j++)
                 std::cout << " ";
-             std::cout << i.getPrenom() << " " << i.getNom() << std::endl ;
+             std::cout << i.getFirstname() << " " << i.getName() << std::endl ;
 
             break;
         }
@@ -152,7 +153,7 @@ void Magasin::showClient(int id){
 
             for(int j = 0 ; j < (int)std::to_string(i.getId()).length() - 3; j++)
                 std::cout << " ";
-             std::cout << i.getPrenom() << " " << i.getNom() << std::endl ;
+             std::cout << i.getFirstname() << " " << i.getName() << std::endl ;
             break;
         }
     }
@@ -162,9 +163,9 @@ void Magasin::showClient(int id){
 
 void Magasin::addProductBasket(std::string title, std::string firstname, std::string lastname){
     for(auto& i : m_products)
-        if( i.getTitre() == title){
+        if( i.getTitle() == title){
             for(auto& j : m_clients)
-                if( j.getPrenom() == firstname || j.getNom() == lastname ){
+                if( j.getFirstname() == firstname || j.getName() == lastname ){
                     j.newProduct(i);
                     break;
                 }
@@ -177,7 +178,7 @@ void Magasin::addProductBasket(std::string title, std::string firstname, std::st
 void Magasin::addProductBasket(std::string title, int id ){
 
     for(auto& i : m_products)
-        if( i.getTitre() == title){
+        if( i.getTitle() == title){
             for(auto& j : m_clients)
                 if( j.getId() == id){
                     j.newProduct(i);
@@ -199,9 +200,9 @@ void Magasin::addProductStore(std::string lastname, std::string description, flo
 
 void Magasin::DelProductBasket(std::string title, std::string firstname, std::string lastname){
     for(auto& i : m_products)
-        if( i.getTitre() == title){
+        if( i.getTitle() == title){
             for(auto& j : m_clients)
-                if( j.getPrenom() == firstname || j.getNom() == lastname){
+                if( j.getFirstname() == firstname || j.getName() == lastname){
                     j.delProduct(title);
                     break;               
                 }
@@ -212,7 +213,7 @@ void Magasin::DelProductBasket(std::string title, std::string firstname, std::st
 
 void Magasin::delProductBasket(std::string title, int id){
     for(auto& i : m_products)
-        if( i.getTitre() == title){
+        if( i.getTitle() == title){
             for(auto& j : m_clients)
                 if( j.getId() == id ){
                     j.delProduct(title);
@@ -226,7 +227,7 @@ void Magasin::delProductBasket(std::string title, int id){
 
 void Magasin::updProductQuant(std::string title, int quantity, int id){
     for(auto& i : m_products)
-        if( i.getTitre() == title){
+        if( i.getTitle() == title){
             for(auto& j : m_clients)
                 if( j.getId() == id ){
                     j.newQuantity(title, quantity);
@@ -240,9 +241,9 @@ void Magasin::updProductQuant(std::string title, int quantity, int id){
 
 void Magasin::updProductQuant(std::string title, int quantity, std::string firstname, std::string lastname){
     for(auto& i : m_products)
-        if( i.getTitre() == title){
+        if( i.getTitle() == title){
             for(auto& j : m_clients)
-                if( j.getPrenom() == firstname || j.getNom() == lastname){
+                if( j.getFirstname() == firstname || j.getName() == lastname){
                     j.newQuantity(title, quantity);
                     break;
                 }
@@ -257,29 +258,29 @@ void Magasin::updProductQuant(std::string title, int quantity, std::string first
 
 bool Magasin::validOrder(Client& client){
     bool valide = true ;
-    for(auto& i:client.getPanier())
+    for(auto& i:client.getCart())
         for(auto& j:m_products)
-            if(i.getTitre() == j.getTitre())
-                if( i.getQuantite() >= j.getQuantite()){
+            if(i.getTitle() == j.getTitle())
+                if( i.getQuantity() >= j.getQuantity()){
                     valide = false;
                     std::cout << " Il y a -- produits "
-                              << i.getTitre() << " -- est : " << j.getQuantite();
+                              << i.getTitle() << " -- est : " << j.getQuantity();
                     }                                     
 
     if(valide){
         Commande commande(client);
         m_orders.push_back(commande);
         //modifier la quantité des produits est present  après  validation
-        for(auto& i :client.getPanier())
+        for(auto& i :client.getCart())
             for(auto& j: m_products)
-                if(i.getTitre() == j.getTitre()){
+                if(i.getTitle() == j.getTitle()){
                     int quantite_restee;
-                    quantite_restee = j.getQuantite() - i.getQuantite();
+                    quantite_restee = j.getQuantity() - i.getQuantity();
                     j.setQuantite(quantite_restee);
                 }
 
         std::cout << "Valid command" << std::endl;
-        client.viderPanier();
+        client.emptyCart();
     }
 
     else
@@ -297,35 +298,35 @@ bool Magasin::validOrder(std::string firstname, std::string lastname){
     bool client_trouve = false;
     //vérifier que le client existe
     for(auto&i : m_clients)
-        if(i.getPrenom() == firstname && i.getNom() == lastname ){
+        if(i.getFirstname() == firstname && i.getName() == lastname ){
             client = &i;
             client_trouve = true ;
             break;
         }
 
     if(client_trouve)
-    for(auto& i:client -> getPanier())
+    for(auto& i:client -> getCart())
         for(auto& j:m_products)
-            if(i.getTitre() == j.getTitre())
-                if( i.getQuantite() >= j.getQuantite()){
+            if(i.getTitle() == j.getTitle())
+                if( i.getQuantity() >= j.getQuantity()){
                     valide = false;
                     std::cout << "  Il y a -- produits "
-                              << i.getTitre() << " -- est : " << j.getQuantite();
+                              << i.getTitle() << " -- est : " << j.getQuantity();
                     }                                     
 
     if(valide){
         Commande commande(*client);
         m_orders.push_back(commande); 
-        for(auto& i :client->getPanier())
+        for(auto& i :client->getCart())
             for(auto& j: m_products)
-                if(i.getTitre() == j.getTitre()){
+                if(i.getTitle() == j.getTitle()){
                     int quantite_restee;
-                    quantite_restee = j.getQuantite() - i.getQuantite();
+                    quantite_restee = j.getQuantity() - i.getQuantity();
                     j.setQuantite(quantite_restee);
                 }
 
         std::cout << " Valid command" << std::endl;
-        client->viderPanier();
+        client->emptyCart();
     }
     else if(!client_trouve)
         std::cout << "Order nor found , no client found" << std::endl;
@@ -345,20 +346,20 @@ bool Magasin::validOrder(int id){
         }
 
 
-    for(auto& i:client->getPanier())
+    for(auto& i:client->getCart())
         for(auto& j:m_products)
-            if(i.getTitre() == j.getTitre())
-                if( i.getQuantite() > j.getQuantite()){
+            if(i.getTitle() == j.getTitle())
+                if( i.getQuantity() > j.getQuantity()){
                     valide = false;
                     std::cout << "[ERROR - UNVALID] PRODUCT'S QUANTITY   "
-                              << i.getTitre() << "  is : " << j.getQuantite() << ". Client asked for " << i.getQuantite() << std::endl;
+                              << i.getTitle() << "  is : " << j.getQuantity() << ". Client asked for " << i.getQuantity() << std::endl;
                     }                                     
 
     if(valide){
         Commande commande(*client);
         m_orders.push_back(commande); 
         std::cout << "Valid command" << std::endl;
-        client->viderPanier();
+        client->emptyCart();
     }
     else if(!client_trouve)
         std::cout << " Order nor found , no client found" << std::endl;
@@ -376,7 +377,7 @@ bool Magasin::updOrderStatus(int id , bool status){
 
     for(auto&i : m_orders)
         if(i.getId() == id ){
-            i.setLivraison(status);
+            i.setdelivery(status);
             commande_trouvee = true ;
             break;
         }    
@@ -396,7 +397,7 @@ bool Magasin::updOrderStatus(int id , bool status){
 void Magasin::showPastOrders(){
     std::cout << "\t---Affichage des commandes passées---\n";
     for(auto& i : m_orders)
-        if(i.getLivraison())
+        if(i.getdelivery())
             std::cout << i << std::endl;
 }
 
@@ -419,7 +420,7 @@ void Magasin::showClientOrders(int id){
 void Magasin::showClientOrders(std::string firstname, std::string lastname){
     std::cout << "\t---Affichage des commandes du client " << firstname << " "<< lastname << " ---\n";
     for(auto& i : m_orders)
-        if( i.getClient()->getPrenom() == firstname && i.getClient()->getNom() == lastname)
+        if( i.getClient()->getFirstname() == firstname && i.getClient()->getName() == lastname)
             std::cout << i << std::endl;
 }
 
@@ -427,7 +428,7 @@ void Magasin::showClientOrders(std::string firstname, std::string lastname){
 
 bool Magasin::productExist(std::string title){
     for(auto&i : m_products)
-        if(i.getTitre() == title)
+        if(i.getTitle() == title)
             return true;
     return false;
 }
@@ -436,7 +437,7 @@ bool Magasin::productExist(std::string title){
 
 Product* Magasin::productFind(std::string title){
     for(auto&i : m_products)
-        if(i.getTitre() == title)
+        if(i.getTitle() == title)
             return &i;
     //si on trouve pas le produit correspondant on fait un return
     return nullptr;
@@ -446,7 +447,7 @@ Product* Magasin::productFind(std::string title){
 
 bool Magasin::IsClient(std::string firstname, std::string lastname){
     for(auto& i:m_clients)
-        if( i.getPrenom() == firstname && i.getNom() == lastname)
+        if( i.getFirstname() == firstname && i.getName() == lastname)
             return true ;
 
     return false ;
@@ -467,7 +468,7 @@ bool Magasin::IsClient(int id){
 Client* Magasin::clientFind(std::string firstname , std::string lastname){
     if(IsClient(firstname,lastname)){
         for(auto& i:m_clients)
-            if( i.getPrenom() == firstname && i.getNom() == lastname)
+            if( i.getFirstname() == firstname && i.getName() == lastname)
                 return &i ;//client trouvé
     } 
     
