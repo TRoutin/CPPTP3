@@ -23,15 +23,15 @@ double Product::getPrix() const {
     return m_price; 
 }
 // definition des setters
-void Product::setTitre(std::string& titre) { 
-    m_title = titre; 
+void Product::setTitre(std::string& title) { 
+    m_title = title; 
 }
 void Product::setDescription(std::string& description) { 
     m_description = description;
 }
-void Product::setQuantite(int quantite) {
-    if (quantite > 0 || quantite == 0)
-        m_quantity = quantite;
+void Product::setQuantite(int quantity) {
+    if (quantity > 0 || quantity == 0)
+        m_quantity = quantity;
     else {
         m_quantity = 0;
         std::cout << " la quantite d'un produit par defaut   " << getTitle() << " est 0.\n";
@@ -48,6 +48,6 @@ void Product::setPrix(double prix) {
 
 //defenition de surcharge de l operateur
 std::ostream& operator<< (std::ostream& output, Product& product) {
-    output << "titre = " << product.getTitle() << std::endl << "description = " << product.getDescription() << std::endl << "quantite = " << product.getQuantity() << std::endl << " prix =" << product.getPrix() << std::endl;
+    output << "title = " << product.getTitle() << std::endl << "description = " << product.getDescription() << std::endl << "quantity = " << product.getQuantity() << std::endl << " price =" << product.getPrix() << std::endl;
     return output;
 }

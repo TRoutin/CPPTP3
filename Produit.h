@@ -18,10 +18,10 @@ public:
     double getPrix() const;
 
     //setters
-    void setTitre(std::string& titre);
+    void setTitre(std::string& title);
     void setDescription(std::string& description);
-    void setQuantite(int quantite);
-    void setPrix(double prix);
+    void setQuantite(int quantity);
+    void setPrix(double price);
 
     //surcharge
     friend std::ostream& operator<< (std::ostream& output, Product& product);
