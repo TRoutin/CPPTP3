@@ -9,3 +9,4 @@
 *.filters
 *.user
 .vs/CPPTP3/v16/.suo
+*.ipch
